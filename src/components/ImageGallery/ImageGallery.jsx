@@ -21,23 +21,33 @@ export class ImageGallery extends Component {
     empty: false,
   };
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevProps.imageName !== this.props.imageName ||
-      prevState.page !== this.state.page
-    ) {
-      this.getImages(this.props.imageName, this.state.page);
+    const { imageName } = this.props;
+    const { page, images } = this.state;
+    if (prevProps.imageName !== imageName || prevState.page !== page) {
+      this.getImages(imageName, page);
+    }
+    if (prevState.images !== images && images.length > 12) {
+      const { height: cardHeight } = document
+        .querySelector('ul')
+        .firstElementChild.getBoundingClientRect();
+
+      window.scrollBy({
+        top: cardHeight * 4,
+        behavior: 'smooth',
+      });
     }
   }
 
-  getImages = async (imageName, page) => {
+  getImages = async (imgName, page) => {
+    const {imageName} = this.state;
     try {
-      if (imageName !== this.state.imageName) {
+      if (imgName !== imageName) {
         this.setState({ loading: true });
-        const responseImages = await fetchImages(imageName, page);
+        const responseImages = await fetchImages(imgName, page);
 
         if (!responseImages.hits.length) {
           toast.error(
-            `Sorry, there are no images matching your query: "${imageName}". Please try to search something else.`
+            `Sorry, there are no images matching your query: "${imgName}". Please try to search something else.`
           );
           return this.setState({
             images: [],
@@ -53,14 +63,14 @@ export class ImageGallery extends Component {
           images: responseImages.hits,
           page: prevState.page,
           total: responseImages.total,
-          imageName,
+          imageName: imgName,
           empty: false,
         }));
       }
-      if (imageName === this.state.imageName) {
+      if (imgName === imageName) {
         this.setState({ loading: true });
         const nextImages = await fetchImages(
-          this.state.imageName,
+          imageName,
           this.state.page
         );
         return this.setState(prevState => ({
@@ -80,25 +90,24 @@ export class ImageGallery extends Component {
   };
 
   render() {
+    const {error, loading, empty, images, total, page} = this.state;
     return (
       <Container>
-        {this.state.error && (
-          <h2>Something went wrong: ({this.state.error})!</h2>
+        {error && (
+          <h2>Something went wrong: ({error})!</h2>
         )}
-        {this.state.loading && <Loader />}
-        {this.state.empty && <Empty>Sorry. There are no images ... 😭</Empty>}
-        <div>
+        {loading && <Loader />}
+        {empty && <Empty>Sorry, there are no images matching your query. Please try to search something else... 🙄</Empty>}
           <GalleryList>
-            {this.state.images.map(img => (
+            {images.map(img => (
               <ImageGalleryItem image={img} key={img.id} />
             ))}
           </GalleryList>
-          {this.state.total / 12 > this.state.page && (
+          {total / 12 > page && (
             <ButtonMore type="button" onClick={this.loadMoreBtn}>
               Load more
             </ButtonMore>
           )}
-        </div>
       </Container>
     );
   }

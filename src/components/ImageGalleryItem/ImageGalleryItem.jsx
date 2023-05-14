@@ -15,19 +15,21 @@ export class ImageGalleryItem extends Component {
   };
 
   render() {
+    const {image} = this.props;
+    const {showModal} = this.state;
     return (
       <>
-        <GalleryItem key={this.props.image.id} onClick={this.openModal}>
+        <GalleryItem key={image.id} onClick={this.openModal}>
           <Image
-            src={this.props.image.webformatURL}
-            alt={this.props.image.tags}
+            src={image.webformatURL}
+            alt={image.tags}
           ></Image>
         </GalleryItem>
-        {this.state.showModal && (
+        {showModal && (
           <Modal onClose={this.closeModal}>
             <img
-              src={this.props.image.largeImageURL}
-              alt={this.props.image.tags}
+              src={image.largeImageURL}
+              alt={image.tags}
             />
           </Modal>
         )}

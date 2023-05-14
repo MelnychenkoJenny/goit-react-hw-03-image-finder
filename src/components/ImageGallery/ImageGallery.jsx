@@ -32,7 +32,7 @@ export class ImageGallery extends Component {
         .firstElementChild.getBoundingClientRect();
 
       window.scrollBy({
-        top: cardHeight * 4,
+        top: cardHeight * 2,
         behavior: 'smooth',
       });
     }

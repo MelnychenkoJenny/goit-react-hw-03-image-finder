@@ -1,3 +1,4 @@
+import EmptyImg from '../images/empty.png';
 import { ImageGalleryItem } from 'components/ImageGalleryItem';
 import { Loader } from 'components/Loader';
 import { fetchImages } from 'components/services/pixabayApi';
@@ -7,6 +8,8 @@ import {
   ButtonMore,
   Container,
   Empty,
+  EmptyImage,
+  EmptyText,
   GalleryList,
 } from './ImageGallery.styled';
 
@@ -39,7 +42,7 @@ export class ImageGallery extends Component {
   }
 
   getImages = async (imgName, page) => {
-    const {imageName} = this.state;
+    const { imageName } = this.state;
     try {
       if (imgName !== imageName) {
         this.setState({ loading: true });
@@ -69,10 +72,7 @@ export class ImageGallery extends Component {
       }
       if (imgName === imageName) {
         this.setState({ loading: true });
-        const nextImages = await fetchImages(
-          imageName,
-          this.state.page
-        );
+        const nextImages = await fetchImages(imageName, this.state.page);
         return this.setState(prevState => ({
           images: [...prevState.images, ...nextImages.hits],
           page: prevState.page,
@@ -90,24 +90,30 @@ export class ImageGallery extends Component {
   };
 
   render() {
-    const {error, loading, empty, images, total, page} = this.state;
+    const { error, loading, empty, images, total, page } = this.state;
     return (
       <Container>
-        {error && (
-          <h2>Something went wrong: ({error})!</h2>
-        )}
+        {error && <h2>Something went wrong: ({error})!</h2>}
         {loading && <Loader />}
-        {empty && <Empty>Sorry, there are no images matching your query. Please try to search something else... 🙄</Empty>}
-          <GalleryList>
-            {images.map(img => (
-              <ImageGalleryItem image={img} key={img.id} />
-            ))}
-          </GalleryList>
-          {total / 12 > page && (
-            <ButtonMore type="button" onClick={this.loadMoreBtn}>
-              Load more
-            </ButtonMore>
-          )}
+        {empty && (
+          <Empty>
+            <EmptyText>
+              Sorry, there are no images matching your query. Please try to
+              search something else... 🙄
+            </EmptyText>
+            <EmptyImage src={EmptyImg} alt="emptyImageCat" />
+          </Empty>
+        )}
+        <GalleryList>
+          {images.map(img => (
+            <ImageGalleryItem image={img} key={img.id} />
+          ))}
+        </GalleryList>
+        {total / 12 > page && (
+          <ButtonMore type="button" onClick={this.loadMoreBtn}>
+            Load more
+          </ButtonMore>
+        )}
       </Container>
     );
   }

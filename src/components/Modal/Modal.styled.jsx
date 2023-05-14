@@ -9,11 +9,11 @@ export const Backdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: ${({ theme: { colors } }) => colors.backdrop};
   z-index: 1200;
 `;
 
 export const ModalContent = styled.div`
-  max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 24px);
+  max-width: 130vh;
+  max-height: 60vw;
 `;

@@ -18,11 +18,11 @@ export class Modal extends Component {
     }
   };
 
-    handleBackdropClick = e => {
-if(e.currentTarget === e.target) {
-    this.props.onClose();
-}
+  handleBackdropClick = e => {
+    if (e.currentTarget === e.target) {
+      this.props.onClose();
     }
+  };
   render() {
     return createPortal(
       <Backdrop onClick={this.handleBackdropClick}>

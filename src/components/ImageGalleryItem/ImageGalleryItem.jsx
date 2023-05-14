@@ -1,5 +1,6 @@
 import { Modal } from 'components/Modal';
 import { Component } from 'react';
+import { GalleryItem, Image } from './ImageGalleryItem.styled';
 
 export class ImageGalleryItem extends Component {
   state = {
@@ -7,33 +8,30 @@ export class ImageGalleryItem extends Component {
   };
 
   openModal = () => {
-    this.setState({showModal: true})
-
-  }
+    this.setState({ showModal: true });
+  };
   closeModal = () => {
-    this.setState({showModal: false})
-  }
+    this.setState({ showModal: false });
+  };
 
   render() {
     return (
-      <div>
-        <li key={this.props.image.id} onClick={this.openModal}>
-          <img
+      <>
+        <GalleryItem key={this.props.image.id} onClick={this.openModal}>
+          <Image
             src={this.props.image.webformatURL}
             alt={this.props.image.tags}
-            width="30"
-          ></img>
-        </li>
+          ></Image>
+        </GalleryItem>
         {this.state.showModal && (
           <Modal onClose={this.closeModal}>
             <img
               src={this.props.image.largeImageURL}
               alt={this.props.image.tags}
-              width='50'
             />
           </Modal>
         )}
-      </div>
+      </>
     );
   }
 }

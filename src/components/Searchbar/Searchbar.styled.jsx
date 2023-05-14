@@ -25,7 +25,7 @@ export const FormStyle = styled(Form)`
   overflow: hidden;
 `;
 export const Input = styled(Field)`
-  width: 100%;
+width: 330px;
   height: 30px;
   padding-left: 10px;
   border: none;

@@ -13,7 +13,7 @@ export class ImageGalleryItem extends Component {
   closeModal = () => {
     this.setState({ showModal: false });
   };
-
+ 
   render() {
     const {image} = this.props;
     const {showModal} = this.state;

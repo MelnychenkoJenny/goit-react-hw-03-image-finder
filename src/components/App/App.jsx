@@ -18,6 +18,7 @@ export class App extends Component {
     total: 1,
     loading: false,
     empty: false,
+    showButtonMore: true,
   };
 
   componentDidUpdate(_, prevState) {
@@ -65,6 +66,7 @@ export class App extends Component {
         page: prevState.page,
         total: responseImages.total,
         empty: false,
+        showButtonMore: true,
       }));
     } catch (error) {
       this.setState({ error: error.message });
@@ -74,23 +76,23 @@ export class App extends Component {
   };
 
   loadMoreBtn = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+    this.setState(prevState => ({ page: prevState.page + 1, showButtonMore: false  }));
   };
 
   render() {
-    const { error, loading, empty, total, page } = this.state;
+    const { error, loading, empty, total, page, showButtonMore, images } = this.state;
     return (
       <Container>
         <Searchbar onSubmit={this.handleImageNameChange} />
-        <ImageGallery images={this.state.images} />
+        <ImageGallery images={images} />
         {error && <h2>Something went wrong: ({error})!</h2>}
         {loading && <Loader />}
         {empty && <EmptyNotification />}
-        {total / 12 > page && (
-          <ButtonMore type="button" onClick={this.loadMoreBtn}>
-            Load more
-          </ButtonMore>
-        )}
+        {showButtonMore && total / 12 > page && (
+  <ButtonMore type="button" onClick={this.loadMoreBtn}>
+    Load more
+  </ButtonMore>
+)}
         <ToastContainer autoClose={2000} />
       </Container>
     );

@@ -26,6 +26,7 @@ export class App extends Component {
     if (prevState.imageName !== imageName || prevState.page !== page) {
       this.getImages(imageName, page);
     }
+
     if (images.length > 12 && prevState.images !== images) {
       const { height: cardHeight } = document
         .querySelector('ul')
@@ -63,7 +64,6 @@ export class App extends Component {
       }
       this.setState(prevState => ({
         images: [...prevState.images, ...responseImages.hits],
-        page: prevState.page,
         total: responseImages.total,
         empty: false,
         showButtonMore: true,

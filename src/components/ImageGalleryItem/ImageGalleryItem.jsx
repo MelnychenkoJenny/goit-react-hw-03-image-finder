@@ -19,7 +19,7 @@ export class ImageGalleryItem extends Component {
     const {showModal} = this.state;
     return (
       <>
-        <GalleryItem key={image.id} onClick={this.openModal}>
+        <GalleryItem onClick={this.openModal}>
           <Image
             src={image.webformatURL}
             alt={image.tags}

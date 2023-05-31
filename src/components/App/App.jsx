@@ -40,6 +40,12 @@ export class App extends Component {
   }
 
   handleImageNameChange = imageName => {
+    if (imageName === this.state.imageName) {
+      toast.error(
+        `Images for this request have already been shown. Try another one.`
+      );
+      return;
+    }
     this.setState({
       imageName,
       images: [],

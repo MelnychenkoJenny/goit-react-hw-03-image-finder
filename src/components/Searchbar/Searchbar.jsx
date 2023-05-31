@@ -18,7 +18,7 @@ export const Searchbar = ({ onSubmit }) => {
       );
       return;
     }
-    onSubmit(value.searchValue.trim());
+    onSubmit(value.searchValue.trim().toLowerCase());
     actions.resetForm();
   };
   return (
